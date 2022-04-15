@@ -4,19 +4,20 @@ services:
   mailreader:
     build:
       context: .
+    #user: root
     volumes:
-      - ./app:/app
-      - ./conf:/conf
-      - ./maildir:/maildir
-      - ./conf/afew/:/home/imapuser/.config/afew/
-      - ./conf/.bogofilter/:/home/imapuser/.bogofilter/
+      - ./app:/app:rw
+      - ./conf:/conf:rw
+      - ./maildir:/maildir:rw
+      - ./conf/afew/:/home/imapuser/.config/afew/:rw
+      - ./conf/.bogofilter/:/home/imapuser/.bogofilter/:rw
     environment:
       - NOTMUCH_CONFIG=/conf/.notmuch-config
       - MAILDIR=/maildir
-    ports:
-      - "8745:8745"
-      - "8080:8080"
-    command: python3 account-sync.py
+    #ports:
+    #  - "8745:8745"
+    #  - "8080:8080"
+    #command: python3 account-sync.py
     #links:
     #  - "davmail:mail"
     #depends_on:

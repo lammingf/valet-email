@@ -5,7 +5,7 @@ RUN pip install --upgrade pip
 
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y cron offlineimap3 ca-certificates notmuch afew lieer bogofilter
-RUN useradd -ms /bin/bash imapuser
+RUN useradd -u 5000 -ms /bin/bash imapuser
 
 USER imapuser
 
@@ -20,4 +20,4 @@ VOLUME [ "/app" ] #app code
 
 WORKDIR /app
 
-CMD [ "python3", "account-sync.py" ]
+CMD ["./entrypoint.sh"]

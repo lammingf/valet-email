@@ -1,0 +1,53 @@
+#!/bin/bash
+#/usr/local/bin/python3 /app/spam-filter.py
+
+#run afew
+afew --tag --new
+
+#fixes a couple of mistagged spam messages
+notmuch search tag:spam AND tag:important AND tag:new
+
+#to me
+notmuch tag +to-me tag:new AND to:ediscard@outlook.com
+notmuch tag +to-me tag:new AND to:evault@outlook.com
+notmuch tag +to-me tag:new AND to:fred.sub@outlook.com
+notmuch tag +to-me tag:new AND to:frederick.t.lamming@hotmail.com
+notmuch tag +to-me tag:new AND to:fredlamming@outlook.com
+notmuch tag +to-me tag:new AND to:gamer-dad@outlook.com
+notmuch tag +to-me tag:new AND to:frederick.lamming@gmail.com
+notmuch tag +to-me tag:new AND to:frederick.lamming+.*@gmail.com
+notmuch tag +to-me tag:new AND to:lammingf@kxsolutions.com
+
+#cc me
+notmuch tag +cc-me tag:new AND cc:evault@outlook.com
+notmuch tag +cc-me tag:new AND cc:fred.sub@outlook.com
+notmuch tag +cc-me tag:new AND cc:frederick.t.lamming@hotmail.com
+notmuch tag +cc-me tag:new AND cc:fredlamming@outlook.com
+notmuch tag +cc-me tag:new AND cc:gamer-dad@outlook.com
+notmuch tag +cc-me tag:new AND cc:frederick.lamming@gmail.com
+notmuch tag +cc-me tag:new AND cc:frederick.lamming+.*@gmail.com
+notmuch tag +cc-me tag:new AND cc:lammingf@kxsolutions.com
+
+#from me
+notmuch tag +from-me tag:new AND from:evault@outlook.com
+notmuch tag +from-me tag:new AND from:fred.sub@outlook.com
+notmuch tag +from-me tag:new AND from:frederick.t.lamming@hotmail.com
+notmuch tag +from-me tag:new AND from:fredlamming@outlook.com
+notmuch tag +from-me tag:new AND from:gamer-dad@outlook.com
+notmuch tag +from-me tag:new AND from:frederick.lamming@gmail.com
+notmuch tag +from-me tag:new AND from:frederick.lamming+.*@gmail.com
+notmuch tag +from-me tag:new AND from:lammingf@kxsolutions.com
+
+#mailing list tag looking for unsubscribe links
+notmuch tag +mailing-list tag:new AND body:/\<a.*unsubscribe.*href.*\/a\>/ or body:/\<a.*href.*unsubscribe.*\/a\>/
+notmuch tag +mailing-list tag:new AND body:/mailto:.*unsubscribe@/ NOT tag:mailing-list
+notmuch tag +mailing-list tag:new AND body:unsubscribe AND body:"click here" NOT tag:mailing-list
+
+#receipt
+notmuch tag +receipt tag:new AND body:receipt and body:\$ NOT tag:from-me
+notmuch tag +receipt tag:new AND body:Receipt and body:\$ NOT tag:from-me
+notmuch tag +receipt tag:new AND attachment:.*.pdf body:/attach.*folio/ NOT tag:from-me
+notmuch tag +receipt tag:new AND attachment:.*.pdf body:/attach.*invoice/ NOT tag:from-me
+
+#make sure sent items are not unread
+notmuch tag -unread tag:sent AND tag:unread
